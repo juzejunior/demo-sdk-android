@@ -6,6 +6,7 @@ import java.util.List;
 
 import stone.application.StoneStart;
 import stone.user.UserModel;
+import stone.utils.Stone;
 
 /**
  * @author frodrigues
@@ -18,10 +19,10 @@ public class DemoApplication extends Application {
     public void onCreate() {
         super.onCreate();
         users = StoneStart.init(this);
+        Stone.setAppName("StoneDemoApplication");
     }
 
     public static List<UserModel> getUsers() {
         return users;
     }
-
 }
