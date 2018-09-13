@@ -105,10 +105,6 @@ public class ValidationActivity extends AppCompatActivity implements View.OnClic
 
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE})
     public void initiateApp() {
-        /*
-         * Este deve ser, obrigatoriamente, o primeiro metodo
-         * a ser chamado. E um metodo que trabalha com sessao.
-         */
         List<UserModel> user = DemoApplication.getUsers();
 
         // se retornar nulo, voce provavelmente nao ativou a SDK

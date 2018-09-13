@@ -18,6 +18,10 @@ public class DemoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        /*
+         * Este deve ser o primeiro método
+         * a ser chamado para inicializar o SDK
+         */
         users = StoneStart.init(this);
         Stone.setAppName("StoneDemoApplication");
     }
