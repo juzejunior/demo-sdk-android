@@ -206,7 +206,7 @@ public class TransactionListActivity extends AppCompatActivity implements OnItem
     }
 
     private void sendReceipt(TransactionObject selectedTransaction, ReceiptType receiptType) {
-        SendEmailTransactionProvider sendEmailProvider = new SendEmailTransactionProvider(TransactionListActivity.this, Stone.getUserModel(0), selectedTransaction);
+        SendEmailTransactionProvider sendEmailProvider = new SendEmailTransactionProvider(TransactionListActivity.this, selectedTransaction);
         sendEmailProvider.useDefaultUI(false);
         sendEmailProvider.setReceiptType(receiptType);
         sendEmailProvider.addTo(new Contact("cliente@gmail.com", "Nome do Cliente"));
