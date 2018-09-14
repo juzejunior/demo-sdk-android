@@ -1,7 +1,10 @@
 package br.com.stonesdk.sdkdemo.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -33,10 +36,10 @@ public class ManageStoneCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_stone_code);
 
-        findViewById(R.id.activateManageStoneCodeButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.activateButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activateStoneCodeButtonOnClickListener();
+                activateStoneCode();
             }
         });
 
@@ -44,10 +47,22 @@ public class ManageStoneCodeActivity extends AppCompatActivity {
         stoneCodeListView.setAdapter(populateStoneCodeListView());
         stoneCodeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                manageStoneCodeListViewOnItemClickListener(position);
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                new AlertDialog.Builder(ManageStoneCodeActivity.this)
+                        .setTitle("Desativar Stone Code")
+                        .setMessage("Tem certeza que deseja desativar? Ao fazer isso, todas as transações feitas por esse stone code serão deletadas!")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deactivateStoneCode(position);
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show()
+                ;
             }
         });
+
 
     }
 
@@ -65,7 +80,7 @@ public class ManageStoneCodeActivity extends AppCompatActivity {
         return stoneCodeAdapter;
     }
 
-    private void activateStoneCodeButtonOnClickListener() {
+    private void activateStoneCode() {
         final EditText stoneCodeEditText = findViewById(R.id.insertManageStoneCodeEditText);
         final ActiveApplicationProvider activeApplicationProvider = new ActiveApplicationProvider(ManageStoneCodeActivity.this);
         activeApplicationProvider.setDialogTitle("Aguarde");
@@ -82,23 +97,15 @@ public class ManageStoneCodeActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Erro: " + activeApplicationProvider.getListOfErrors(), Toast.LENGTH_LONG).show();
                 Log.e("ManageStoneCodeActivity", "onError: " + activeApplicationProvider.getListOfErrors());
             }
         });
 
         activeApplicationProvider.activate(stoneCodeEditText.getText().toString());
-
-        /*
-          : example with list of stone codes :
-
-            List<String> stoneCodeList = Arrays.asList("636852", "357894", "095632");
-            activeApplicationProvider.activate(stoneCodeList);
-
-         */
     }
 
-    private void manageStoneCodeListViewOnItemClickListener(int position) {
+    private void deactivateStoneCode(int position) {
         final ActiveApplicationProvider activeApplicationProvider = new ActiveApplicationProvider(ManageStoneCodeActivity.this);
         activeApplicationProvider.setDialogTitle("Aguarde");
         activeApplicationProvider.setDialogMessage("Desativando...");
@@ -110,6 +117,11 @@ public class ManageStoneCodeActivity extends AppCompatActivity {
                 stoneCodeListView.setAdapter(populateStoneCodeListView());
                 ((ArrayAdapter) stoneCodeListView.getAdapter()).notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                if (!Stone.hasUserModel()) {
+                    final Intent intent = new Intent(ManageStoneCodeActivity.this, ValidationActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
             @Override

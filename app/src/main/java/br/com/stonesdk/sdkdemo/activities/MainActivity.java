@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.posTransactionOption).setOnClickListener(this);
         findViewById(R.id.pairedDevicesOption).setOnClickListener(this);
         findViewById(R.id.disconnectDeviceOption).setOnClickListener(this);
-        findViewById(R.id.deactivateOption).setOnClickListener(this);
         findViewById(R.id.cancelTransactionsOption).setOnClickListener(this);
         findViewById(R.id.displayMessageOption).setOnClickListener(this);
         findViewById(R.id.listTransactionOption).setOnClickListener(this);
@@ -137,29 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 reversalProvider.execute();
-                break;
-
-            case R.id.deactivateOption:
-                final ActiveApplicationProvider provider = new ActiveApplicationProvider(MainActivity.this);
-                provider.setDialogMessage("Desativando o aplicativo...");
-                provider.setDialogTitle("Aguarde");
-                provider.useDefaultUI(true);
-                provider.setConnectionCallback(new StoneCallbackInterface() {
-                    /* Metodo chamado se for executado sem erros */
-                    public void onSuccess() {
-                        Intent mainIntent = new Intent(MainActivity.this, ValidationActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                    }
-
-                    /* metodo chamado caso ocorra alguma excecao */
-                    public void onError() {
-                        makeText(MainActivity.this, "Erro na ativacao do aplicativo, verifique a lista de erros do provider", LENGTH_SHORT).show();
-                        /* Chame o metodo abaixo para verificar a lista de erros. Para mais detalhes, leia a documentacao: */
-                        Log.e("deactivateOption", "onError: " + provider.getListOfErrors().toString());
-                    }
-                });
-                provider.deactivate();
                 break;
 
             case R.id.disconnectDeviceOption:

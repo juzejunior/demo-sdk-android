@@ -105,11 +105,7 @@ public class ValidationActivity extends AppCompatActivity implements View.OnClic
 
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE})
     public void initiateApp() {
-        List<UserModel> user = DemoApplication.getUsers();
-
-        // se retornar nulo, voce provavelmente nao ativou a SDK
-        // ou as informacoes da Stone SDK foram excluidas
-        if (user != null) {
+        if (Stone.hasUserModel()) { // Verifica se há algum stone code ativado
             /* caso ja tenha as informacoes da SDK e chamado o ActiveApplicationProvider anteriormente
                sua aplicacao podera seguir o fluxo normal */
             continueApplication();
