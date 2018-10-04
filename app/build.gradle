@@ -21,7 +21,7 @@ android {
 }
 
 ext {
-    sdkVersion = '3.2.0-RC2'
+    sdkVersion = '3.1.0-RC2'
 }
 
 dependencies {
@@ -34,5 +34,4 @@ dependencies {
     implementation "br.com.stone:stone-sdk:$sdkVersion"
     implementation "br.com.stone:stone-sdk-posandroid:$sdkVersion"
     implementation "br.com.stone:stone-sdk-posandroid-ingenico:$sdkVersion"
-    implementation "br.com.stone:stone-sdk-posandroid-nexgo:$sdkVersion"
 }
